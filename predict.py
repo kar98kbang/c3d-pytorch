@@ -11,13 +11,15 @@ import skimage.io as io
 from skimage.transform import resize
 
 from C3D_model import C3D
+import os
+os.environ['CUDA_VISIABLE_DEVICES'] = '0'
 
 
 def get_sport_clip(clip_name, verbose=True):
     """
     Loads a clip to be fed to C3D for classification.
     TODO: should I remove mean here?
-    
+
     Parameters
     ----------
     clip_name: str
@@ -31,7 +33,7 @@ def get_sport_clip(clip_name, verbose=True):
         a pytorch batch (n, ch, fr, h, w).
     """
 
-    clip = sorted(glob(join('data', clip_name, '*.png')))
+    clip = sorted(glob(join('data', clip_name, '*.jpg')))
     clip = np.array([resize(io.imread(frame), output_shape=(112, 200), preserve_range=True) for frame in clip])
     clip = clip[:, :, 44:44+112, :]  # crop centrally
 
@@ -50,12 +52,12 @@ def get_sport_clip(clip_name, verbose=True):
 def read_labels_from_file(filepath):
     """
     Reads Sport1M labels from file
-    
+
     Parameters
     ----------
     filepath: str
         the file.
-        
+
     Returns
     -------
     list
@@ -72,8 +74,9 @@ def main():
     """
 
     # load a clip to be predicted
-    X = get_sport_clip('roger')
+    X = get_sport_clip('finger')  # batch size * channel * frames * height * width
     X = Variable(X)
+    print(X.size())
     X = X.cuda()
 
     # get network pretrained model
@@ -81,11 +84,11 @@ def main():
     net.load_state_dict(torch.load('c3d.pickle'))
     net.cuda()
     net.eval()
-
+    print("create network")
     # perform prediction
     prediction = net(X)
     prediction = prediction.data.cpu().numpy()
-
+    print("prediction")
     # read labels
     labels = read_labels_from_file('labels.txt')
 
