@@ -36,7 +36,7 @@ def get_sport_clip(clip_name, verbose=True):
     clip = sorted(glob(join('data', clip_name, '*.jpg')))
     clip = np.array([resize(io.imread(frame), output_shape=(112, 112), preserve_range=True) for frame in clip])
     # clip = clip[:, :, 44:44+112, :]  # crop centrally
-
+    print(clip.shape)
     if verbose:
         clip_img = np.reshape(clip.transpose(1, 0, 2, 3), (112, 16 * 112, 3))
         io.imshow(clip_img.astype(np.uint8))
@@ -81,22 +81,24 @@ def main():
 
     # get network pretrained model
     net = C3D()
-    net.load_state_dict(torch.load('c3d.pickle'))
+    # net.load_state_dict(torch.load('c3d.pickle'))
     net.cuda()
     net.eval()
     print("create network")
     # perform prediction
     prediction = net(X)
-    prediction = prediction.data.cpu().numpy()
-    print("prediction")
-    # read labels
-    labels = read_labels_from_file('labels.txt')
-
-    # print top predictions
-    top_inds = prediction[0].argsort()[::-1][:5]  # reverse sort and take five largest items
-    print('\nTop 5:')
-    for i in top_inds:
-        print('{:.5f} {}'.format(prediction[0][i], labels[i]))
+    print(prediction.size())
+    print(prediction)
+    # prediction = prediction.data.cpu().numpy()
+    # print("prediction")
+    # # read labels
+    # labels = read_labels_from_file('labels.txt')
+    #
+    # # print top predictions
+    # top_inds = prediction[0].argsort()[::-1][:5]  # reverse sort and take five largest items
+    # print('\nTop 5:')
+    # for i in top_inds:
+    #     print('{:.5f} {}'.format(prediction[0][i], labels[i]))
 
 
 # entry point

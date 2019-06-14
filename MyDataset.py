@@ -2,6 +2,8 @@ from torch.utils.data.dataset import Dataset
 from torch.utils.data import DataLoader
 import os
 import csv
+import numpy as np
+import torch
 
 FramePath = "/home/data/imaginist_data/Trajectory/training_data/"
 LabelPath = "./label.csv"
@@ -21,9 +23,14 @@ class ParkinsonDataset(Dataset):
 
 
     def __getitem__(self, index):
-        # 按照序号index返回数据和标签
-        # return self.data[index]
-        return self.data_path[index], self.label[index]
+        clip = np.load(self.data_path[index])
+        clip = clip.transpose(3, 0, 1, 2)  # ch, fr, h, w
+        # clip = np.expand_dims(clip, axis=0)  # batch axis
+        clip = np.float32(clip)
+        label = np.zeros((5,))
+        label[self.label[index]] = 1
+        return torch.from_numpy(clip), torch.from_numpy(label)
+
     def __len__(self):
         # 返回数据库长度
         return len(self.label)
@@ -34,4 +41,4 @@ if __name__ == "__main__":
     train_loader = DataLoader(dset_train, batch_size=1, shuffle=False, num_workers=0)
     print("Training Data : ", len(train_loader.dataset))
     for batch_idx, (data, label) in enumerate(train_loader):
-        print(data, label)
+        print(data.size, label)
