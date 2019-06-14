@@ -17,7 +17,7 @@ class ParkinsonDataset(Dataset):
                 patient_path = FramePath + row[0] + "_" + row[1] + "/"
                 for data_index in sorted(os.listdir(patient_path)):
                     self.data_path.append(patient_path+data_index)
-                    self.label.append(int(row))
+                    self.label.append(int(row[2]))
 
 
     def __getitem__(self, index):
@@ -31,7 +31,7 @@ class ParkinsonDataset(Dataset):
 
 if __name__ == "__main__":
     dset_train = ParkinsonDataset()
-    train_loader = DataLoader(dset_train, batch_size=1, shuffle=True, num_workers=0)
+    train_loader = DataLoader(dset_train, batch_size=1, shuffle=False, num_workers=0)
     print("Training Data : ", len(train_loader.dataset))
-    for batch_idx, data, label in enumerate(train_loader):
+    for batch_idx, (data, label) in enumerate(train_loader):
         print(data, label)
