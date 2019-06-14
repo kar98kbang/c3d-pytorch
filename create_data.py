@@ -25,7 +25,7 @@ for patient in patient_list:
             block_list1.append(image_path)
             if len(block_list1) == 16:
                 clip = np.array([resize(io.imread(frame), output_shape=(112, 112), preserve_range=True) for frame in block_list1])
-                np.save(save_path+str(data_index)+'.npy', clip)
+                np.save(save_path+"{:0>3}".format(data_index)+'.npy', clip)
                 data_index += 1
                 block_list1 = []
 
@@ -33,7 +33,7 @@ for patient in patient_list:
             block_list2.append(image_path)
             if len(block_list2) == 16:
                 clip = np.array([resize(io.imread(frame), output_shape=(112, 112), preserve_range=True) for frame in block_list2])
-                np.save(save_path+str(data_index)+'.npy', clip)
+                np.save(save_path+"{:0>3}".format(data_index)+'.npy', clip)
                 data_index += 1
                 block_list2 = []
 
@@ -41,7 +41,7 @@ for patient in patient_list:
             block_list3.append(image_path)
             if len(block_list3) == 16:
                 clip = np.array([resize(io.imread(frame), output_shape=(112, 112), preserve_range=True) for frame in block_list3])
-                np.save(save_path+str(data_index)+'.npy', clip)
+                np.save(save_path+"{:0>3}".format(data_index)+'.npy', clip)
                 data_index += 1
                 block_list3 = []
         count += 1
