@@ -16,7 +16,7 @@ class ParkinsonDataset(Dataset):
                 # print(row)
                 patient_path = FramePath + row[0] + "_" + row[1] + "/"
                 for data_index in sorted(os.listdir(patient_path)):
-                    self.data.append(patient_path+data_index)
+                    self.data_path.append(patient_path+data_index)
                     self.label.append(int(row))
 
 
