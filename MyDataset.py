@@ -27,12 +27,14 @@ class ParkinsonDataset(Dataset):
                     count += 1
 
         if data_type == 'test':
+            print("im in")
             with open(LabelPath) as csvfile:
                 csv_reader = csv.reader(csvfile)  # 使用csv.reader读取csvfile中的文件
                 count = 0
                 for row in csv_reader:  # 将csv文件中的数据保存到birth_data中
-                    # print(row)
+                    # print(count, row)
                     if count < 80:
+                        count += 1
                         continue
                     patient_path = FramePath + row[0] + "_" + row[1] + "/"
                     for data_index in sorted(os.listdir(patient_path)):

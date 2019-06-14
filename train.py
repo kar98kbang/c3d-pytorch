@@ -14,7 +14,7 @@ def train():
 
     learning_rate = 0.003
     optimizer = torch.optim.SGD(C3dNet.parameters(), lr=learning_rate, momentum=0.9)
-    loss_func = torch.nn.CrossEntropyLoss()
+    loss_func = torch.nn.SoftMarginLoss()
 
     dset_train = ParkinsonDataset(data_type='train')
 
@@ -24,14 +24,16 @@ def train():
     print("training start!")
 
     for epoch in range(100):
-        if epoch % 20 ==0:
+        if epoch>0 and epoch % 20 ==0:
             learning_rate = learning_rate / 2
             for param_group in optimizer.param_groups:
                 param_group['lr'] = learning_rate
+
         for batch_index, (data, label) in enumerate(train_loader):
             data, label = data.cuda(), label.cuda()
+            label = label.float()
             predict = C3dNet(data)
-
+            # print("predict and label size: ", predict.size(), label.size())
             loss = loss_func(predict, label)
 
             optimizer.zero_grad()
