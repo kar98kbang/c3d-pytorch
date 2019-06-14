@@ -89,16 +89,16 @@ def main():
     prediction = net(X)
     print(prediction.size())
     print(prediction)
-    # prediction = prediction.data.cpu().numpy()
-    # print("prediction")
-    # # read labels
-    # labels = read_labels_from_file('labels.txt')
-    #
-    # # print top predictions
-    # top_inds = prediction[0].argsort()[::-1][:5]  # reverse sort and take five largest items
-    # print('\nTop 5:')
-    # for i in top_inds:
-    #     print('{:.5f} {}'.format(prediction[0][i], labels[i]))
+    prediction = prediction.data.cpu().numpy()
+    print("prediction")
+    # read labels
+    labels = read_labels_from_file('labels.txt')
+
+    # print top predictions
+    top_inds = prediction[0].argsort()[::-1][:5]  # reverse sort and take five largest items
+    print('\nTop 5:')
+    for i in top_inds:
+        print('{:.5f} {}'.format(prediction[0][i], labels[i]))
 
 
 # entry point
