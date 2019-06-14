@@ -34,8 +34,8 @@ def get_sport_clip(clip_name, verbose=True):
     """
 
     clip = sorted(glob(join('data', clip_name, '*.jpg')))
-    clip = np.array([resize(io.imread(frame), output_shape=(112, 200), preserve_range=True) for frame in clip])
-    clip = clip[:, :, 44:44+112, :]  # crop centrally
+    clip = np.array([resize(io.imread(frame), output_shape=(112, 112), preserve_range=True) for frame in clip])
+    # clip = clip[:, :, 44:44+112, :]  # crop centrally
 
     if verbose:
         clip_img = np.reshape(clip.transpose(1, 0, 2, 3), (112, 16 * 112, 3))
