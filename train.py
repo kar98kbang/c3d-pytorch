@@ -15,7 +15,7 @@ def train():
 
     learning_rate = 0.001
     optimizer = torch.optim.SGD(C3dNet.parameters(), lr=learning_rate, momentum=0.9)
-    loss_func = torch.nn.CrossEntropyLoss()
+    loss_func = torch.nn.NLLLoss()
 
     dset_train = ParkinsonDataset(data_type='train')
 
