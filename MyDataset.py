@@ -48,9 +48,9 @@ class ParkinsonDataset(Dataset):
         clip = clip.transpose(3, 0, 1, 2)  # ch, fr, h, w
         # clip = np.expand_dims(clip, axis=0)  # batch axis
         clip = np.float32(clip)
-        label = np.zeros((5,))
-        label[self.label[index]] = 1
-        return torch.from_numpy(clip), torch.from_numpy(label)
+        # label = np.zeros((5,))
+        # label[self.label[index]] = 1
+        return torch.from_numpy(clip), self.label[index]
 
     def __len__(self):
         # 返回数据库长度

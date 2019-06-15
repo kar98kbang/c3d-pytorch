@@ -13,9 +13,9 @@ def train():
     C3dNet.cuda()
     C3dNet.train()
 
-    learning_rate = 0.01
+    learning_rate = 0.003
     optimizer = torch.optim.SGD(C3dNet.parameters(), lr=learning_rate, momentum=0.99)
-    loss_func = torch.nn.SoftMarginLoss()
+    loss_func = torch.nn.CrossEntropyLoss()
 
     dset_train = ParkinsonDataset(data_type='train')
 
