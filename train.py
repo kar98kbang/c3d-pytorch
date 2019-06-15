@@ -11,14 +11,15 @@ os.environ['CUDA_VISIABLE_DEVICES'] = '0,1'
 def train():
     C3dNet = C3D()
     C3dNet.cuda()
+    C3dNet.train()
 
-    learning_rate = 0.003
-    optimizer = torch.optim.SGD(C3dNet.parameters(), lr=learning_rate, momentum=0.9)
+    learning_rate = 0.01
+    optimizer = torch.optim.SGD(C3dNet.parameters(), lr=learning_rate, momentum=0.99)
     loss_func = torch.nn.SoftMarginLoss()
 
     dset_train = ParkinsonDataset(data_type='train')
 
-    train_loader = DataLoader(dset_train, batch_size=30, shuffle=True, num_workers=0)
+    train_loader = DataLoader(dset_train, batch_size=20, shuffle=True, num_workers=0)
 
     print("Training Data : ", len(train_loader.dataset))
     print("training start!")
