@@ -13,8 +13,8 @@ def train():
     C3dNet.cuda()
     C3dNet.train()
 
-    learning_rate = 0.003
-    optimizer = torch.optim.SGD(C3dNet.parameters(), lr=learning_rate, momentum=0.99)
+    learning_rate = 0.001
+    optimizer = torch.optim.SGD(C3dNet.parameters(), lr=learning_rate, momentum=0.9)
     loss_func = torch.nn.CrossEntropyLoss()
 
     dset_train = ParkinsonDataset(data_type='train')
@@ -24,15 +24,16 @@ def train():
     print("Training Data : ", len(train_loader.dataset))
     print("training start!")
 
-    for epoch in range(100):
+    for epoch in range(400):
+        '''
         if epoch>0 and epoch % 20 ==0:
             learning_rate = learning_rate / 2
             for param_group in optimizer.param_groups:
                 param_group['lr'] = learning_rate
-
+        '''
         for batch_index, (data, label) in enumerate(train_loader):
             data, label = data.cuda(), label.cuda()
-            label = label.float()
+            # # # label = label.float()
             predict = C3dNet(data)
             # print("predict and label size: ", predict.size(), label.size())
             loss = loss_func(predict, label)
@@ -40,9 +41,11 @@ def train():
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            print("epoch: {}/99 | batch_index: {} | loss: {}".format(epoch, batch_index, loss.item()))
+            print("epoch: {}/399 | batch_index: {} | loss: {}".format(epoch, batch_index, loss.item()))
+        if epoch > 0 and (epoch+1) % 100 == 0:
+            torch.save(C3dNet.state_dict(), './weights/MyC3dNet{}.pth'.format(epoch+1))
 
-    torch.save(C3dNet.state_dict(), './weights/MyC3dNet.pth')
+    # torch.save(C3dNet.state_dict(), './weights/MyC3dNet.pth')
 
 if __name__ == '__main__':
     train()
