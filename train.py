@@ -13,24 +13,24 @@ def train():
     C3dNet.cuda()
     C3dNet.train()
 
-    learning_rate = 0.001
+    learning_rate = 0.01
     optimizer = torch.optim.SGD(C3dNet.parameters(), lr=learning_rate, momentum=0.9)
-    loss_func = torch.nn.NLLLoss()
+    loss_func = torch.nn.CrossEntropyLoss()
 
     dset_train = ParkinsonDataset(data_type='train')
 
-    train_loader = DataLoader(dset_train, batch_size=20, shuffle=True, num_workers=0)
+    train_loader = DataLoader(dset_train, batch_size=20, shuffle=False, num_workers=0)
 
     print("Training Data : ", len(train_loader.dataset))
     print("training start!")
 
     for epoch in range(400):
-        '''
-        if epoch>0 and epoch % 20 ==0:
+
+        if epoch>0 and epoch % 100 ==0:
             learning_rate = learning_rate / 2
             for param_group in optimizer.param_groups:
                 param_group['lr'] = learning_rate
-        '''
+
         for batch_index, (data, label) in enumerate(train_loader):
             data, label = data.cuda(), label.cuda()
             # # # label = label.float()
