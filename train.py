@@ -14,12 +14,13 @@ def train():
     C3dNet.train()
 
     learning_rate = 0.01
-    optimizer = torch.optim.SGD(C3dNet.parameters(), lr=learning_rate, momentum=0.9)
+    optimizer = torch.optim.Adam(C3dNet.parameters(), lr=learning_rate)
+    # optimizer = torch.optim.SGD(C3dNet.parameters(), lr=learning_rate, momentum=0.9)
     loss_func = torch.nn.CrossEntropyLoss()
 
     dset_train = ParkinsonDataset(data_type='train')
 
-    train_loader = DataLoader(dset_train, batch_size=20, shuffle=False, num_workers=0)
+    train_loader = DataLoader(dset_train, batch_size=16, shuffle=True, num_workers=0)
 
     print("Training Data : ", len(train_loader.dataset))
     print("training start!")
