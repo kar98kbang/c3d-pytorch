@@ -33,7 +33,7 @@ def get_sport_clip(clip_name, verbose=True):
         a pytorch batch (n, ch, fr, h, w).
     """
 
-    clip = sorted(glob(join('data', clip_name, '*.jpg')))
+    clip = sorted(glob(join('data', clip_name, '*.png')))
     clip = np.array([resize(io.imread(frame), output_shape=(112, 112), preserve_range=True) for frame in clip])
     # clip = clip[:, :, 44:44+112, :]  # crop centrally
     print(clip.shape)
@@ -74,14 +74,14 @@ def main():
     """
 
     # load a clip to be predicted
-    X = get_sport_clip('finger')  # batch size * channel * frames * height * width
+    X = get_sport_clip('roger')  # batch size * channel * frames * height * width
     X = Variable(X)
     print(X.size())
     X = X.cuda()
 
     # get network pretrained model
     net = C3D()
-    # net.load_state_dict(torch.load('c3d.pickle'))
+    net.load_state_dict(torch.load('c3d.pickle'))
     net.cuda()
     net.eval()
     print("create network")
